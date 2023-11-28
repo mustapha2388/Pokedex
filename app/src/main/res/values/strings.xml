@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Pokedex</string>
+    <string name="app_name">Pokédex</string>
     <string name="type">type</string>
     <string name="normal">normal</string>
     <string name="fighting">fighting</string>
