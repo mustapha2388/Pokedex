@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Background -->
+    <item android:id="@android:id/background">
+        <shape>
+            <corners android:radius="10dp"/> <!-- Ajustez le rayon selon vos préférences -->
+            <solid android:color="#CCCCCC"/> <!-- Couleur de fond grise -->
+        </shape>
+    </item>
+
+    <!-- Progress -->
+    <item android:id="@android:id/progress">
+        <clip>
+            <shape>
+                <corners android:radius="10dp"/> <!-- Ajustez le rayon selon vos préférences -->
+                <solid android:color="@color/Light"/> <!-- Couleur light -->
+            </shape>
+        </clip>
+    </item>
+</layer-list>

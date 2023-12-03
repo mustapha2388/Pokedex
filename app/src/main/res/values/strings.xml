@@ -35,4 +35,7 @@
     <string name="m">m</string>
     <string name="basic">basic</string>
     <string name="shiny">shiny</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hp">hp</string>
 </resources>

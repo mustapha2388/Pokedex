@@ -1,10 +1,10 @@
 package com.example.pokedex.ui.controllers;
 
+import static com.example.pokedex.utils.Utils.initToolbar;
+
 import android.os.Bundle;
 import android.view.View;
-import android.view.WindowManager;
 
-import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.GridLayoutManager;
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
 
     private ArrayList<Pokemon> pokemons;
     private PokemonAdapter adapter;
-    private int spanCount = 3;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,15 +30,11 @@ public class MainActivity extends AppCompatActivity {
         View view = binding.getRoot();
         setContentView(view);
 
-
-        initToolbar();
+        initToolbar(this, binding.toolbar.getRoot());
         initRecyclerview();
     }
 
     private void initRecyclerview() {
-
-        GridLayoutManager layoutManager = new GridLayoutManager(this, spanCount);
-        binding.recyclerView.setLayoutManager(layoutManager);
 
         pokemons = new ArrayList<>(Arrays.asList(
                 new Pokemon("Bulbasaur", 1),
@@ -68,20 +64,5 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new PokemonAdapter(pokemons);
         binding.recyclerView.setAdapter(adapter);
-    }
-
-    private void initToolbar() {
-
-        hideStatusBar();
-        setSupportActionBar(binding.toolbar.getRoot());
-        ///Add back button
-        ActionBar actionBar = getSupportActionBar();
-        if (actionBar != null) {
-            actionBar.setTitle("");
-        }
-    }
-
-    private void hideStatusBar() {
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }
 }
