@@ -1,22 +1,16 @@
 package com.example.pokedex.model;
 
+import com.squareup.moshi.Json;
+
 public class Pokemon {
-
+    @Json(name = "name")
     private String name;
-    private int number;
 
-    public Pokemon(String name, int number) {
-        this.name = name;
-        this.number = number;
-    }
+    @Json(name = "id")
+    private int id;
 
-    @Override
-    public String toString() {
-        return "Pokemon{" +
-                "name='" + name + '\'' +
-                ", number=" + number +
-                '}';
-    }
+    @Json(name = "sprites")
+    private Sprite sprites;
 
     public String getName() {
         return name;
@@ -26,11 +20,15 @@ public class Pokemon {
         this.name = name;
     }
 
-    public int getNumber() {
-        return number;
+    public int getId() {
+        return id;
     }
 
-    public void setNumber(int number) {
-        this.number = number;
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public Sprite getSprites() {
+        return sprites;
     }
 }
