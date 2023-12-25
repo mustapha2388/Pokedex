@@ -1,7 +1,10 @@
 package com.example.pokedex.utils;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -16,6 +19,7 @@ import com.example.pokedex.R;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.model.PokemonListItem;
 import com.example.pokedex.ui.controllers.DetailActivity;
+import com.example.pokedex.ui.controllers.MainActivity;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,10 +31,11 @@ public class Utils {
     public static String ID_POKEMON = "ID_POKEMON";
     public static int SECONDS_LOADING = 1200;
 
-    public static int LIMIT = 20;
+    public static int LIMIT = 40;
 
 
-    public static String OFFSET = "offset";
+    public static String OFFSET = "OFFSET";
+    public static String OFFSET_PREFS = "OFFSET_PREFS";
 
 
     public static void startActivity(Context context, Class<?> destinationClass) {
@@ -92,5 +97,18 @@ public class Utils {
         }
 
         return pokemonArrayListSorted;
+    }
+
+    public static void saveCurrentOffset(MainActivity mainActivity, int offset) {
+        SharedPreferences preferences = mainActivity.getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = preferences.edit();
+        editor.putInt(OFFSET_PREFS, offset);
+        editor.apply();
+    }
+
+
+    public static int getOffsetSaved(MainActivity mainActivity) {
+        SharedPreferences preferences = mainActivity.getPreferences(MODE_PRIVATE);
+        return preferences.getInt(OFFSET_PREFS, 0);
     }
 }

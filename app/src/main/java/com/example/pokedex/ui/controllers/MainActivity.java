@@ -1,14 +1,15 @@
 package com.example.pokedex.ui.controllers;
 
 import static com.example.pokedex.utils.Utils.LIMIT;
+import static com.example.pokedex.utils.Utils.OFFSET;
 import static com.example.pokedex.utils.Utils.SECONDS_LOADING;
+import static com.example.pokedex.utils.Utils.getOffsetSaved;
 import static com.example.pokedex.utils.Utils.initToolbar;
+import static com.example.pokedex.utils.Utils.saveCurrentOffset;
 
-import android.content.ContentValues;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
-import android.util.Log;
 import android.view.View;
 
 import androidx.annotation.NonNull;
@@ -37,8 +38,25 @@ public class MainActivity extends AppCompatActivity {
 
     private String previous = null;
     private String next = null;
-
     ArrayList<Pokemon> pokemons = new ArrayList<>();
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        int offsetSaved = getOffsetSaved(this);
+        pokemonViewModel.updateOffset(offsetSaved);
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        assert pokemonViewModel.getLiveDataOffset().getValue() != null;
+        int offset = pokemonViewModel.getLiveDataOffset().getValue();
+        saveCurrentOffset(this, offset);
+    }
 
 
     @Override
@@ -50,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(view);
 
         handler = new Handler(Looper.getMainLooper());
-        initToolbar(this, binding.toolbar.getRoot());
+        initToolbar(MainActivity.this, binding.toolbar.getRoot());
 
         initViewModel();
         setupRecyclerViewListener();
@@ -68,7 +86,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void initViewModel() {
 
-        pokemonViewModel = new ViewModelProvider(this).get(PokemonViewModel.class);
+        pokemonViewModel = new ViewModelProvider(MainActivity.this).get(PokemonViewModel.class);
     }
 
     private void setupRecyclerViewListener() {
@@ -114,8 +132,8 @@ public class MainActivity extends AppCompatActivity {
 
 
     private int extractOffsetOf(String url) {
-        if (url != null && url.contains("offset")) {
-            String[] urlParts = url.split("offset");
+        if (url != null && url.contains(OFFSET.toLowerCase())) {
+            String[] urlParts = url.split(OFFSET.toLowerCase());
             if (urlParts.length > 1) {
                 String offsetStr = urlParts[1].split("&")[0].replace("=", "");
                 return Integer.parseInt(offsetStr);
@@ -129,7 +147,7 @@ public class MainActivity extends AppCompatActivity {
 
         binding.progressCircular.setVisibility(View.VISIBLE);
         // Hide the progress bar after 2 seconds
-        handler.postDelayed(this::hideProgressBar, SECONDS_LOADING);
+        handler.postDelayed(MainActivity.this::hideProgressBar, SECONDS_LOADING);
     }
 
 
@@ -140,7 +158,7 @@ public class MainActivity extends AppCompatActivity {
     private void getIdsPokemonListFromService() {
 
 
-        pokemonViewModel.getLiveDataIdsPokemonList().observe(this, idArrayLiveData -> {
+        pokemonViewModel.getLiveDataIdsPokemonList().observe(MainActivity.this, idArrayLiveData -> {
 
 
             getPreviousAndNextUrls(pokemonViewModel.getLiveDataPrevious(), PageDirection.PREVIOUS);
@@ -151,14 +169,14 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-        pokemonViewModel.getLiveDataOffset().observe(this, offsetLiveData -> {
+        pokemonViewModel.getLiveDataOffset().observe(MainActivity.this, offsetLiveData -> {
             pokemonViewModel.getIdsPokemonList(offsetLiveData, LIMIT);
         });
     }
 
     private void getPreviousAndNextUrls(LiveData<String> liveDataPage, PageDirection page) {
 
-        liveDataPage.observe(this, pageUrl -> {
+        liveDataPage.observe(MainActivity.this, pageUrl -> {
             if (page.equals(PageDirection.PREVIOUS)) {
                 previous = pageUrl;
             } else {
@@ -169,10 +187,10 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateRecyclerView(ArrayList<Integer> ids) {
 
-        adapter = new PokemonAdapter(pokemons, this);
+        adapter = new PokemonAdapter(pokemons, MainActivity.this);
         binding.recyclerView.setAdapter(adapter);
 
-        pokemonViewModel.getLiveDataPokemonArrayListSortedById().observe(this, pokemonArrayList -> {
+        pokemonViewModel.getLiveDataPokemonArrayListSortedById().observe(MainActivity.this, pokemonArrayList -> {
             showProgressBarForNumberOfSeconds();
             pokemons.clear();
             pokemons.addAll(pokemonArrayList);
