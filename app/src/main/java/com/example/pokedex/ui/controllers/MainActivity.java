@@ -1,8 +1,9 @@
 package com.example.pokedex.ui.controllers;
 
 import static com.example.pokedex.utils.Utils.LIMIT;
-import static com.example.pokedex.utils.Utils.OFFSET;
+import static com.example.pokedex.utils.Utils.OFFSET_FIRST_PAGE;
 import static com.example.pokedex.utils.Utils.SECONDS_LOADING;
+import static com.example.pokedex.utils.Utils.extractOffsetOf;
 import static com.example.pokedex.utils.Utils.getOffsetSaved;
 import static com.example.pokedex.utils.Utils.initToolbar;
 import static com.example.pokedex.utils.Utils.saveCurrentOffset;
@@ -14,6 +15,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -40,23 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private String next = null;
     ArrayList<Pokemon> pokemons = new ArrayList<>();
 
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        int offsetSaved = getOffsetSaved(this);
-        pokemonViewModel.updateOffset(offsetSaved);
-
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        assert pokemonViewModel.getLiveDataOffset().getValue() != null;
-        int offset = pokemonViewModel.getLiveDataOffset().getValue();
-        saveCurrentOffset(this, offset);
-    }
+    private boolean pokemonSearched = false;
 
 
     @Override
@@ -71,22 +57,70 @@ public class MainActivity extends AppCompatActivity {
         initToolbar(MainActivity.this, binding.toolbar.getRoot());
 
         initViewModel();
+
+        setupSearchViewListener();
         setupRecyclerViewListener();
 
-        if (pokemonViewModel.getLiveDataOffset().getValue() != null && pokemonViewModel.getLiveDataOffset().getValue() > 0) {
-            pokemonViewModel.updateOffset(pokemonViewModel.getLiveDataOffset().getValue());
-        } else {
-            pokemonViewModel.updateOffset(0);
-        }
-
-
         getIdsPokemonListFromService();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        int offsetSaved = getOffsetSaved(this);
+        pokemonViewModel.updateOffset(offsetSaved);
 
     }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        assert pokemonViewModel.getLiveDataOffset().getValue() != null;
+        int offset = pokemonViewModel.getLiveDataOffset().getValue();
+        saveCurrentOffset(this, offset);
+    }
+
 
     private void initViewModel() {
 
         pokemonViewModel = new ViewModelProvider(MainActivity.this).get(PokemonViewModel.class);
+    }
+
+    private void setupSearchViewListener() {
+
+        binding.toolbar.searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String name) {
+
+                if (name.length() == 3) {
+
+                    pokemonViewModel.getLiveDataPokemonsSearched().observe(MainActivity.this, pokemonsSearched -> updateRecyclerView(pokemonsSearched));
+                    pokemonViewModel.getAllPokemonsByName(name);
+                    pokemonSearched = true;
+                } else if (name.length() == 0) {
+
+                    refreshPreviousPokemonListState();
+
+                    pokemonSearched = false;
+
+                }
+                return false;
+            }
+        });
+    }
+
+    private void refreshPreviousPokemonListState() {
+        if (pokemonViewModel.getLiveDataOffset().getValue() != null && pokemonViewModel.getLiveDataOffset().getValue() > 0) {
+            int previousOffset = pokemonViewModel.getLiveDataOffset().getValue();
+            pokemonViewModel.updateOffset(previousOffset);
+        } else {
+            pokemonViewModel.updateOffset(OFFSET_FIRST_PAGE);
+        }
     }
 
     private void setupRecyclerViewListener() {
@@ -102,58 +136,40 @@ public class MainActivity extends AppCompatActivity {
                 int totalItemCount = layoutManager.getItemCount();
 
 
-                if (dy < 0 && isBeginOfList(firstVisibleItemPosition) && previous != null) {
+                if (dy < 0 && isBeginOfList(firstVisibleItemPosition) && isPreviousPageNotNull() && !pokemonSearched) {
 
-                    updateUIRecyclerviewToPage(previous);
+                    updateRecyclerviewToPage(previous);
 
-                } else if (dy > 0 && next != null && isEndOfList(lastVisibleItemPosition, totalItemCount)) {
+                } else if (dy > 0 && isEndOfList(lastVisibleItemPosition, totalItemCount) && isNextPageNotNull() && !pokemonSearched) {
 
-                    updateUIRecyclerviewToPage(next);
+                    updateRecyclerviewToPage(next);
                 }
-
             }
         });
-    }
-
-
-    private boolean isEndOfList(int lastVisibleItemPosition, int totalItemCount) {
-        return lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == totalItemCount - 1;
     }
 
     private boolean isBeginOfList(int firstVisibleItemPosition) {
         return firstVisibleItemPosition == 0;
     }
 
-    private void updateUIRecyclerviewToPage(String url) {
+    private boolean isEndOfList(int lastVisibleItemPosition, int totalItemCount) {
+        return lastVisibleItemPosition != RecyclerView.NO_POSITION && lastVisibleItemPosition == totalItemCount - 1;
+    }
+
+    private boolean isPreviousPageNotNull() {
+        return previous != null;
+    }
+
+    private boolean isNextPageNotNull() {
+        return next != null;
+    }
+
+    private void updateRecyclerviewToPage(String url) {
 
         int offset = extractOffsetOf(url);
         pokemonViewModel.updateOffset(offset);
     }
 
-
-    private int extractOffsetOf(String url) {
-        if (url != null && url.contains(OFFSET.toLowerCase())) {
-            String[] urlParts = url.split(OFFSET.toLowerCase());
-            if (urlParts.length > 1) {
-                String offsetStr = urlParts[1].split("&")[0].replace("=", "");
-                return Integer.parseInt(offsetStr);
-            }
-        }
-        return 0;
-    }
-
-
-    private void showProgressBarForNumberOfSeconds() {
-
-        binding.progressCircular.setVisibility(View.VISIBLE);
-        // Hide the progress bar after 2 seconds
-        handler.postDelayed(MainActivity.this::hideProgressBar, SECONDS_LOADING);
-    }
-
-
-    private void hideProgressBar() {
-        binding.progressCircular.setVisibility(View.INVISIBLE);
-    }
 
     private void getIdsPokemonListFromService() {
 
@@ -164,14 +180,12 @@ public class MainActivity extends AppCompatActivity {
             getPreviousAndNextUrls(pokemonViewModel.getLiveDataPrevious(), PageDirection.PREVIOUS);
             getPreviousAndNextUrls(pokemonViewModel.getLiveDataNext(), PageDirection.NEXT);
 
-            updateRecyclerView(idArrayLiveData);
+            getPokemons(idArrayLiveData);
 
         });
 
 
-        pokemonViewModel.getLiveDataOffset().observe(MainActivity.this, offsetLiveData -> {
-            pokemonViewModel.getIdsPokemonList(offsetLiveData, LIMIT);
-        });
+        pokemonViewModel.getLiveDataOffset().observe(MainActivity.this, offset -> pokemonViewModel.getIdsPokemonList(offset, LIMIT));
     }
 
     private void getPreviousAndNextUrls(LiveData<String> liveDataPage, PageDirection page) {
@@ -185,25 +199,39 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    private void updateRecyclerView(ArrayList<Integer> ids) {
+    private void getPokemons(ArrayList<Integer> ids) {
 
         adapter = new PokemonAdapter(pokemons, MainActivity.this);
         binding.recyclerView.setAdapter(adapter);
 
-        pokemonViewModel.getLiveDataPokemonArrayListSortedById().observe(MainActivity.this, pokemonArrayList -> {
-            showProgressBarForNumberOfSeconds();
-            pokemons.clear();
-            pokemons.addAll(pokemonArrayList);
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        });
+        pokemonViewModel.getLiveDataPokemonArrayListSortedById().observe(MainActivity.this, this::updateRecyclerView);
 
 
         pokemonViewModel.getAllPokemonFromPageSortedById(ids);
-
-
     }
+
+
+    private void updateRecyclerView(ArrayList<Pokemon> pokemonArrayList) {
+        showProgressBarForNumberOfAFewSeconds();
+        pokemons.clear();
+        pokemons.addAll(pokemonArrayList);
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    private void showProgressBarForNumberOfAFewSeconds() {
+
+        binding.progressCircular.setVisibility(View.VISIBLE);
+        // Hide the progress bar after 2 seconds
+        handler.postDelayed(MainActivity.this::hideProgressBar, SECONDS_LOADING);
+    }
+
+
+    private void hideProgressBar() {
+        binding.progressCircular.setVisibility(View.INVISIBLE);
+    }
+
 
     public enum PageDirection {
         PREVIOUS, NEXT
