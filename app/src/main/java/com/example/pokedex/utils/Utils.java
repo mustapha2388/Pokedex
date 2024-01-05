@@ -32,6 +32,7 @@ public class Utils {
     public static int SECONDS_LOADING = 1200;
 
     public static int LIMIT = 40;
+    public static int OFFSET_FIRST_PAGE = 0;
 
 
     public static String OFFSET = "OFFSET";
@@ -110,5 +111,16 @@ public class Utils {
     public static int getOffsetSaved(MainActivity mainActivity) {
         SharedPreferences preferences = mainActivity.getPreferences(MODE_PRIVATE);
         return preferences.getInt(OFFSET_PREFS, 0);
+    }
+
+    public static int extractOffsetOf(String url) {
+        if (url != null && url.contains(OFFSET.toLowerCase())) {
+            String[] urlParts = url.split(OFFSET.toLowerCase());
+            if (urlParts.length > 1) {
+                String offsetStr = urlParts[1].split("&")[0].replace("=", "");
+                return Integer.parseInt(offsetStr);
+            }
+        }
+        return 0;
     }
 }

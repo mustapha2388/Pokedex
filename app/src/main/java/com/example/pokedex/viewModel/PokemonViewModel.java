@@ -45,6 +45,9 @@ public class PokemonViewModel extends AndroidViewModel {
         return pokemonRepository.getLiveDataPokemonArrayListSortedById();
     }
 
+    public LiveData<ArrayList<Pokemon>> getLiveDataPokemonsSearched() {
+        return pokemonRepository.getLiveDataPokemonsSearched();
+    }
     public LiveData<String> getLiveDataPrevious() {
         return pokemonRepository.getLiveDataPrevious();
     }
@@ -57,7 +60,12 @@ public class PokemonViewModel extends AndroidViewModel {
         return pokemonRepository.getLiveDataOffset();
     }
 
-    public void  updateOffset(int value){
+    public void updateOffset(int value) {
         pokemonRepository.updateOffset(value);
     }
+
+    public void getAllPokemonsByName(String name) {
+        pokemonRepository.getAllPokemonsByName(name);
+    }
+
 }
