@@ -50,29 +50,6 @@ public class DetailActivity extends AppCompatActivity {
         getDataOfPokemon(id);
     }
 
-    private void setupFragments(Pokemon pokemon) {
-        Log.i(ContentValues.TAG, "pokemon: " + pokemon.toString());
-
-
-        HeaderPokemonDetailFragment headerPokemonDetailFrag = (HeaderPokemonDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_header);
-
-        if (headerPokemonDetailFrag == null) {
-            headerPokemonDetailFrag = HeaderPokemonDetailFragment.newInstance(pokemon);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_view_header, headerPokemonDetailFrag)
-                    .commit();
-        }
-
-        BodyPokemonDetailFragment bodyPokemonDetailFrag = (BodyPokemonDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_body);
-
-        if (bodyPokemonDetailFrag == null) {
-            bodyPokemonDetailFrag = BodyPokemonDetailFragment.newInstance(pokemon);
-            getSupportFragmentManager().beginTransaction()
-                    .replace(R.id.fragment_container_view_body, bodyPokemonDetailFrag)
-                    .commit();
-        }
-    }
-
     private void initViewModel() {
 
         pokemonViewModel = new ViewModelProvider(this).get(PokemonViewModel.class);
@@ -129,6 +106,31 @@ public class DetailActivity extends AppCompatActivity {
 
         binding.toolbar.pokeballBackground.setImageDrawable(myDrawable);
     }
+
+    private void setupFragments(Pokemon pokemon) {
+        Log.i(ContentValues.TAG, "pokemon: " + pokemon.toString());
+
+
+        HeaderPokemonDetailFragment headerPokemonDetailFrag = (HeaderPokemonDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_header);
+
+        if (headerPokemonDetailFrag == null) {
+            headerPokemonDetailFrag = HeaderPokemonDetailFragment.newInstance(pokemon);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_view_header, headerPokemonDetailFrag)
+                    .commit();
+        }
+
+        BodyPokemonDetailFragment bodyPokemonDetailFrag = (BodyPokemonDetailFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_container_view_body);
+
+        if (bodyPokemonDetailFrag == null) {
+            bodyPokemonDetailFrag = BodyPokemonDetailFragment.newInstance(pokemon);
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container_view_body, bodyPokemonDetailFrag)
+                    .commit();
+        }
+    }
+
+
 
 
 }
