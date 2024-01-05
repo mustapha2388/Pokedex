@@ -1,9 +1,12 @@
 package com.example.pokedex.services;
 
+import com.example.pokedex.model.FlavorTextEntries;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.model.PokemonListResponse;
 
 import java.util.ArrayList;
+import java.util.List;
+
 import java.util.List;
 
 import retrofit2.Call;
@@ -24,5 +27,9 @@ public interface PokeApiService {
 
     @GET("pokemon/")
     Call<PokemonListResponse> getAllPokemons(@Query("offset") int offset, @Query("limit") int limit);
+
+
+    @GET("pokemon-species/{id}")
+    Call<FlavorTextEntries> getPokemonDescription(@Path("id") int id);
 }
 

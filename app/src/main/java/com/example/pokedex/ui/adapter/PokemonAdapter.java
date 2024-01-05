@@ -3,6 +3,7 @@ package com.example.pokedex.ui.adapter;
 import static android.content.ContentValues.TAG;
 import static com.example.pokedex.utils.Utils.startActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -71,7 +72,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
                 int index = getAbsoluteAdapterPosition();
                 Context context = v.getContext();
                 int id = pokemons.get(index).getId();
-                startActivity(context, DetailActivity.class, id);
+                if (context instanceof Activity) {
+                    ((Activity) context).overridePendingTransition(R.anim.fade_in, android.R.anim.fade_out);
+                    startActivity(context, DetailActivity.class, id);
+                }
+
             });
 
         }
@@ -83,7 +88,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
             number.setText(id);
             name.setOnClickListener(view -> Log.i(TAG, "displayPokemon " + name));
 
-            String urlImg = pokemon.getSprites().getOthers().getOfficialArtwork().getFrontDefault();
+            String urlImg = pokemon.getSprite().getOther().getOfficialArtwork().getFrontDefault();
 
             Glide.with(context)
                     .load(urlImg)

@@ -8,6 +8,7 @@ import android.util.Log;
 import androidx.annotation.NonNull;
 import androidx.lifecycle.MutableLiveData;
 
+import com.example.pokedex.model.FlavorTextEntries;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.model.PokemonListItem;
 import com.example.pokedex.model.PokemonListResponse;
@@ -24,20 +25,23 @@ import retrofit2.Response;
 public class PokemonRepository {
     private final MutableLiveData<ArrayList<Integer>> muLivDataIdsPokemonList;
     private final MutableLiveData<Pokemon> muLivDataPokemon;
-    private final MutableLiveData<ArrayList<Pokemon>> muLivDataPokemonArrayListSortedById;
+    private final MutableLiveData<ArrayList<Pokemon>> muLivDataPokemonArrListSortedById;
     private final MutableLiveData<ArrayList<Pokemon>> muLivDataPokemonsSearched;
     private final MutableLiveData<String> muLivDataPrevious;
     private final MutableLiveData<String> muLivDataNext;
     private final MutableLiveData<Integer> muLivDataOffset;
 
+    private final MutableLiveData<FlavorTextEntries> muLivDataDescription;
+
     public PokemonRepository() {
         this.muLivDataIdsPokemonList = new MutableLiveData<>();
         this.muLivDataPokemon = new MutableLiveData<>();
-        this.muLivDataPokemonArrayListSortedById = new MutableLiveData<>();
+        this.muLivDataPokemonArrListSortedById = new MutableLiveData<>();
         this.muLivDataPrevious = new MutableLiveData<>();
         this.muLivDataNext = new MutableLiveData<>();
         this.muLivDataOffset = new MutableLiveData<>();
         this.muLivDataPokemonsSearched = new MutableLiveData<>();
+        this.muLivDataDescription = new MutableLiveData<>();
 
     }
 
@@ -47,6 +51,10 @@ public class PokemonRepository {
 
     public MutableLiveData<ArrayList<Integer>> getLiveDataIdsPokemonList() {
         return muLivDataIdsPokemonList;
+    }
+
+    public MutableLiveData<FlavorTextEntries> getLiveDataPokemonDescription() {
+        return muLivDataDescription;
     }
 
     public MutableLiveData<String> getLiveDataPrevious() {
@@ -66,7 +74,7 @@ public class PokemonRepository {
     }
 
     public MutableLiveData<ArrayList<Pokemon>> getLiveDataPokemonArrayListSortedById() {
-        return muLivDataPokemonArrayListSortedById;
+        return muLivDataPokemonArrListSortedById;
     }
 
     public void getIdsPokemonList(int offset, int limit) {
@@ -105,33 +113,33 @@ public class PokemonRepository {
     }
 
 
-//    public void getPokemonById(int id) {
-//        PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
-//
-//        Call<Pokemon> call = apiService.getPokemonById(id);
-//
-//        call.enqueue(new Callback<Pokemon>() {
-//            @Override
-//            public void onResponse(@NonNull Call<Pokemon> call, @NonNull Response<Pokemon> response) {
-//                if (response.isSuccessful()) {
-//                    Pokemon pokemon = response.body();
-//                    if (pokemon != null) {
-//                        muLivDataPokemon.setValue(pokemon);
-//                    }
-//                } else {
-//                    // Handle errors
-//                    Log.e("Pokemons", "Handle errors");
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(@NonNull Call<Pokemon> call, @NonNull Throwable t) {
-//                // Handle failures
-//                Log.e("Pokemons", "onFailure errors");
-//            }
-//        });
-//
-//    }
+    public void getPokemonById(int id) {
+        PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
+
+        Call<Pokemon> call = apiService.getPokemonById(id);
+
+        call.enqueue(new Callback<Pokemon>() {
+            @Override
+            public void onResponse(@NonNull Call<Pokemon> call, @NonNull Response<Pokemon> response) {
+                if (response.isSuccessful()) {
+                    Pokemon pokemon = response.body();
+                    if (pokemon != null) {
+                        muLivDataPokemon.setValue(pokemon);
+                    }
+                } else {
+                    // Handle errors
+                    Log.e("Pokemons", "Handle errors");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Pokemon> call, @NonNull Throwable t) {
+                // Handle failures
+                Log.e("Pokemons", "onFailure errors");
+            }
+        });
+
+    }
 
     public void getAllPokemonFromPageSortedById(ArrayList<Integer> ids) {
 
@@ -154,7 +162,7 @@ public class PokemonRepository {
                             if (pokemons.size() == ids.size()) {
 
                                 ArrayList<Pokemon> pokemonArrayListSorted = getPokemonArrayListSorted(pokemons);
-                                muLivDataPokemonArrayListSortedById.postValue(pokemonArrayListSorted);
+                                muLivDataPokemonArrListSortedById.postValue(pokemonArrayListSorted);
                             }
                         }
                     } else {
@@ -173,6 +181,33 @@ public class PokemonRepository {
         }
     }
 
+
+    public void getPokemonDescriptionById(int id) {
+        PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
+
+        Call<FlavorTextEntries> call = apiService.getPokemonDescription(id);
+
+        call.enqueue(new Callback<FlavorTextEntries>() {
+            @Override
+            public void onResponse(@NonNull Call<FlavorTextEntries> call, @NonNull Response<FlavorTextEntries> response) {
+                if (response.isSuccessful()) {
+                    FlavorTextEntries flavorTextEntries = response.body();
+                    if (flavorTextEntries != null) {
+                        muLivDataDescription.setValue(flavorTextEntries);
+                    }
+                } else {
+                    // Handle errors
+                    Log.e("Pokemons", "Handle errors");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<FlavorTextEntries> call, @NonNull Throwable t) {
+                // Handle failures
+                Log.e("Pokemons", "onFailure errors");
+            }
+        });
+    }
 
     public void updateOffset(int value) {
         muLivDataOffset.postValue(value);
