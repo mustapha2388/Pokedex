@@ -16,6 +16,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.content.res.ResourcesCompat;
 
 import com.example.pokedex.R;
+import com.example.pokedex.model.FlavorTextEntries;
+import com.example.pokedex.model.FlavorTextEntry;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.model.PokemonListItem;
 import com.example.pokedex.ui.controllers.DetailActivity;
@@ -24,7 +26,10 @@ import com.example.pokedex.ui.controllers.MainActivity;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public class Utils {
@@ -50,6 +55,9 @@ public class Utils {
         context.startActivity(intent);
     }
 
+    public static int getIdOfPokemon(Intent intent) {
+        return intent.getIntExtra(ID_POKEMON, 0);
+    }
 
     public static void initToolbar(AppCompatActivity activity, Toolbar toolbar) {
         hideStatusBar(activity);
@@ -83,21 +91,65 @@ public class Utils {
     public static ArrayList<Pokemon> getPokemonArrayListSorted(ArrayList<Pokemon> pokemonArrayList) {
 
         ArrayList<Pokemon> pokemonArrayListSorted;
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             pokemonArrayListSorted = pokemonArrayList.stream()
                     .sorted(Comparator.comparing(Pokemon::getId)).collect(Collectors.toCollection(ArrayList::new));
         } else {
             Collections.sort(pokemonArrayList, new Comparator<Pokemon>() {
                 @Override
-                public int compare(Pokemon p1, Pokemon p2) {
-                    return Integer.compare(p1.getId(), p2.getId());
+                public int compare(Pokemon pokemon1, Pokemon pokemon2) {
+                    return Integer.compare(pokemon1.getId(), pokemon2.getId());
                 }
             });
-            // Initialize pokemonArrayListSorted if using the else block
             pokemonArrayListSorted = new ArrayList<>(pokemonArrayList);
         }
 
         return pokemonArrayListSorted;
+    }
+
+
+    public static int getColorOfType(String colorName) {
+
+        switch (colorName) {
+
+            case "fighting":
+                return R.color.Fighting;
+            case "flying":
+                return R.color.Flying;
+            case "ground":
+                return R.color.Ground;
+            case "poison":
+                return R.color.Poison;
+            case "rock":
+                return R.color.Rock;
+            case "bug":
+                return R.color.Bug;
+            case "ghost":
+                return R.color.Ghost;
+            case "steel":
+                return R.color.Steel;
+            case "fire":
+                return R.color.Fire;
+            case "water":
+                return R.color.Water;
+            case "grass":
+                return R.color.Grass;
+            case "electric":
+                return R.color.Electric;
+            case "psychic":
+                return R.color.Psychic;
+            case "ice":
+                return R.color.Ice;
+            case "dragon":
+                return R.color.Dragon;
+            case "dark":
+                return R.color.Dark;
+            case "fairy":
+                return R.color.Fairy;
+            default:
+                return R.color.Normal;
+        }
     }
 
     public static void saveCurrentOffset(MainActivity mainActivity, int offset) {
@@ -123,4 +175,44 @@ public class Utils {
         }
         return 0;
     }
+
+    public static Set<String> extractUniqueDescriptionsFr(FlavorTextEntries flavorTextEntries) {
+
+        Set<String> uniqueFlavorTextsSet = new HashSet<>();
+
+        for (FlavorTextEntry flavorTextEntry : flavorTextEntries.getFlavorTextEntries()) {
+            if (Objects.equals(flavorTextEntry.getLanguage().getName(), "fr")) {
+                uniqueFlavorTextsSet.add(flavorTextEntry.getFlavorTexts());
+            }
+        }
+        return uniqueFlavorTextsSet;
+    }
+
+    public static String concatenateDescriptionsWithLineBreaks(Set<String> uniqueFlavorTextsSet) {
+
+        StringBuilder description = new StringBuilder();
+        for (String s : uniqueFlavorTextsSet) {
+            s = removeLineBreak(s);
+            description.append(s).append("\n\n");
+        }
+        return description.toString();
+    }
+
+    private static String removeLineBreak(String description) {
+        return description.replace("\n", "");
+    }
+
+    public static int extractIdFromUrl(String url) {
+
+        if (url == null || url.isEmpty()) {
+            return -1;
+        }
+        String[] segments = url.split("/");
+
+        String lastSegment = segments[segments.length - 1];
+
+        return Integer.parseInt(lastSegment);
+    }
+
+
 }

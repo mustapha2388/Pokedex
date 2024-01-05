@@ -4,13 +4,13 @@ import com.squareup.moshi.Json;
 
 public class Sprite {
     @Json(name = "other")
-    private Other others;
+    private Other other;
 
-    public Other getOthers() {
-        return others;
+    public Other getOther() {
+        return other;
     }
 
-    public void setOthers(Other others) {
-        this.others = others;
+    public void setOther(Other other) {
+        this.other = other;
     }
 }

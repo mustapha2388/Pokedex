@@ -6,10 +6,12 @@ import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 
+import com.example.pokedex.model.FlavorTextEntries;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.repository.PokemonRepository;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class PokemonViewModel extends AndroidViewModel {
 
@@ -25,9 +27,13 @@ public class PokemonViewModel extends AndroidViewModel {
 
     }
 
-//    public void getPokemonById(int id) {
-//        pokemonRepository.getPokemonById(id);
-//    }
+    public void getPokemonById(int id) {
+        pokemonRepository.getPokemonById(id);
+    }
+
+    public void getPokemonDescriptionById(int id) {
+        pokemonRepository.getPokemonDescriptionById(id);
+    }
 
     public void getAllPokemonFromPageSortedById(ArrayList<Integer> ids) {
         pokemonRepository.getAllPokemonFromPageSortedById(ids);
@@ -60,7 +66,12 @@ public class PokemonViewModel extends AndroidViewModel {
         return pokemonRepository.getLiveDataOffset();
     }
 
-    public void updateOffset(int value) {
+
+    public LiveData<FlavorTextEntries> getLiveDataPokemonDescription() {
+        return pokemonRepository.getLiveDataPokemonDescription();
+    }
+
+    public void  updateOffset(int value){
         pokemonRepository.updateOffset(value);
     }
 
