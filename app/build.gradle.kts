@@ -46,8 +46,8 @@ dependencies {
     implementation("com.github.bumptech.glide:glide:5.0.0-rc01")
     annotationProcessor("com.github.bumptech.glide:compiler:5.0.0-rc01")
 
-    implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0-rc02")
-    implementation("androidx.lifecycle:lifecycle-livedata:2.7.0-rc02")
+    implementation("androidx.lifecycle:lifecycle-viewmodel:2.7.0")
+    implementation("androidx.lifecycle:lifecycle-livedata:2.7.0")
 
 
     implementation("com.squareup.moshi:moshi:1.12.0")
@@ -61,4 +61,6 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+
+    implementation("androidx.core:core-splashscreen:1.0.1")
 }

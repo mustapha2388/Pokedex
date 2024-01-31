@@ -18,15 +18,22 @@
             android:name=".ui.controllers.DetailActivity"
             android:exported="false"
             android:parentActivityName=".ui.controllers.MainActivity" />
+
         <activity
             android:name=".ui.controllers.MainActivity"
-            android:exported="true">
+            android:exported="false" />
+
+
+        <activity
+            android:name=".ui.controllers.Splashscreen"
+            android:exported="true"
+            android:theme="@style/Theme.MySplash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
     </application>
 
 </manifest>
