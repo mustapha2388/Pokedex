@@ -13,6 +13,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.ColorUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -48,6 +49,8 @@ public class DetailActivity extends AppCompatActivity {
 
         int id = getIdOfPokemon(getIntent());
         getDataOfPokemon(id);
+
+        setupOnBackPressed();
     }
 
     private void initViewModel() {
@@ -99,7 +102,7 @@ public class DetailActivity extends AppCompatActivity {
 
         Drawable myDrawable = binding.toolbar.pokeballBackground.getDrawable();
 
-        float alpha = 0.09f; // Valeur entre 0 (transparent) et 1 (opaque)
+        float alpha = 0.09f;
 
         int tintedColor = ColorUtils.blendARGB(colorBackground, Color.TRANSPARENT, alpha);
         DrawableCompat.setTint(myDrawable, tintedColor);
@@ -128,9 +131,23 @@ public class DetailActivity extends AppCompatActivity {
                     .replace(R.id.fragment_container_view_body, bodyPokemonDetailFrag)
                     .commit();
         }
+
     }
 
+    private void setupOnBackPressed() {
+        // Set up a callback for the back press
+        OnBackPressedCallback callback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                // Your custom back press handling
+                finish();
+                overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
 
+            }
+        };
 
+        // Add the callback to the back press dispatcher
+        getOnBackPressedDispatcher().addCallback(this, callback);
+    }
 }

@@ -28,6 +28,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -38,6 +39,8 @@ public class Utils {
 
     public static int LIMIT = 40;
     public static int OFFSET_FIRST_PAGE = 0;
+
+    public static boolean MODE_DEV = false;
 
 
     public static String OFFSET = "OFFSET";
@@ -53,6 +56,7 @@ public class Utils {
         Intent intent = new Intent(context, destinationClass);
         intent.putExtra(ID_POKEMON, id);
         context.startActivity(intent);
+        ((MainActivity) context).overridePendingTransition(R.anim.slide_in, R.anim.slide_out);
     }
 
     public static int getIdOfPokemon(Intent intent) {
@@ -214,5 +218,9 @@ public class Utils {
         return Integer.parseInt(lastSegment);
     }
 
+    public static String getIdWith3DigitsFormat(int id) {
+        return String.format(Locale.FRANCE, "#%03d", id);
+
+    }
 
 }

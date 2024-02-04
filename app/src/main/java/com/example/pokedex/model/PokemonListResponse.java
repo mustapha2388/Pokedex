@@ -15,6 +15,9 @@ public class PokemonListResponse {
     @Json(name = "results")
     private List<PokemonListItem> results;
 
+    @Json(name = "count")
+    private int count;
+
     public List<PokemonListItem> getResults() {
         return results;
     }
@@ -28,4 +31,7 @@ public class PokemonListResponse {
         return previous;
     }
 
+    public int getCount() {
+        return count;
+    }
 }

@@ -39,4 +39,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hp">hp</string>
     <string name="sharp_with_pokemon_id">#%1$s</string>
+    <string name="btn_filter">filter boutton</string>
+    <string name="search_pokemon_by_name">search by name</string>
+    <string name="search_pokemon_by_id">search by id</string>
 </resources>

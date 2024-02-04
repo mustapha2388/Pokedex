@@ -1,9 +1,9 @@
 package com.example.pokedex.ui.adapter;
 
 import static android.content.ContentValues.TAG;
+import static com.example.pokedex.utils.Utils.getIdWith3DigitsFormat;
 import static com.example.pokedex.utils.Utils.startActivity;
 
-import android.app.Activity;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,9 +21,9 @@ import com.bumptech.glide.request.RequestOptions;
 import com.example.pokedex.R;
 import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.ui.controllers.DetailActivity;
+import com.example.pokedex.ui.controllers.MainActivity;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonViewHolder> {
     private final ArrayList<Pokemon> pokemons;
@@ -72,8 +72,10 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
                 int index = getAbsoluteAdapterPosition();
                 Context context = v.getContext();
                 int id = pokemons.get(index).getId();
-                if (context instanceof Activity) {
-                    ((Activity) context).overridePendingTransition(R.anim.fade_in, android.R.anim.fade_out);
+
+
+                if (context instanceof MainActivity) {
+
                     startActivity(context, DetailActivity.class, id);
                 }
 
@@ -84,7 +86,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
         public void displayPokemon(Pokemon pokemon) {
 
             name.setText(pokemon.getName());
-            String id = getIdWithFormat(pokemon.getId());
+            String id = getIdWith3DigitsFormat(pokemon.getId());
             number.setText(id);
             name.setOnClickListener(view -> Log.i(TAG, "displayPokemon " + name));
 
@@ -101,8 +103,5 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
     }
 
-    private String getIdWithFormat(int id) {
-        return String.format(Locale.FRANCE, "#%03d", id);
 
-    }
 }

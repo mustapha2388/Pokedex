@@ -54,14 +54,16 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/toolbar"
-                app:queryHint="@string/search"
+                app:queryHint="@string/search_pokemon_by_name"
                 app:searchIcon="@drawable/search" />
 
             <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/filter"
                 android:layout_width="48dp"
                 android:layout_height="48dp"
                 android:layout_marginEnd="20dp"
                 android:background="@drawable/round_corner"
+                android:contentDescription="@string/btn_filter"
                 android:src="@drawable/numbers"
                 app:tint="@color/primary"
 

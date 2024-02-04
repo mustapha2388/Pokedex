@@ -16,6 +16,7 @@ import com.example.pokedex.services.PokeApiClient;
 import com.example.pokedex.services.PokeApiService;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import retrofit2.Call;
@@ -26,7 +27,7 @@ public class PokemonRepository {
     private final MutableLiveData<ArrayList<Integer>> muLivDataIdsPokemonList;
     private final MutableLiveData<Pokemon> muLivDataPokemon;
     private final MutableLiveData<ArrayList<Pokemon>> muLivDataPokemonArrListSortedById;
-    private final MutableLiveData<ArrayList<Pokemon>> muLivDataPokemonsSearched;
+    private final MutableLiveData<ArrayList<Pokemon>> muLivDataAllPokemonsFilterBySearch;
     private final MutableLiveData<String> muLivDataPrevious;
     private final MutableLiveData<String> muLivDataNext;
     private final MutableLiveData<Integer> muLivDataOffset;
@@ -40,7 +41,7 @@ public class PokemonRepository {
         this.muLivDataPrevious = new MutableLiveData<>();
         this.muLivDataNext = new MutableLiveData<>();
         this.muLivDataOffset = new MutableLiveData<>();
-        this.muLivDataPokemonsSearched = new MutableLiveData<>();
+        this.muLivDataAllPokemonsFilterBySearch = new MutableLiveData<>();
         this.muLivDataDescription = new MutableLiveData<>();
 
     }
@@ -69,12 +70,13 @@ public class PokemonRepository {
         return muLivDataPokemon;
     }
 
-    public MutableLiveData<ArrayList<Pokemon>> getLiveDataPokemonsSearched() {
-        return muLivDataPokemonsSearched;
-    }
 
     public MutableLiveData<ArrayList<Pokemon>> getLiveDataPokemonArrayListSortedById() {
         return muLivDataPokemonArrListSortedById;
+    }
+
+    public MutableLiveData<ArrayList<Pokemon>> getLiveDataAllPokemonsForSearchByNameOrId() {
+        return muLivDataAllPokemonsFilterBySearch;
     }
 
     public void getIdsPokemonList(int offset, int limit) {
@@ -213,34 +215,8 @@ public class PokemonRepository {
         muLivDataOffset.postValue(value);
     }
 
+
     public void getPokemonByName(String name) {
-        PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
-
-        Call<Pokemon> call = apiService.getPokemonByName(name);
-
-        call.enqueue(new Callback<Pokemon>() {
-            @Override
-            public void onResponse(@NonNull Call<Pokemon> call, @NonNull Response<Pokemon> response) {
-                if (response.isSuccessful()) {
-                    Pokemon pokemon = response.body();
-                    if (pokemon != null) {
-                        muLivDataPokemon.setValue(pokemon);
-                    }
-                } else {
-                    // Handle errors
-                    Log.e("Pokemons", "Handle errors");
-                }
-            }
-
-            @Override
-            public void onFailure(@NonNull Call<Pokemon> call, @NonNull Throwable t) {
-                // Handle failures
-                Log.e("Pokemons", "onFailure errors");
-            }
-        });
-    }
-
-    public void getAllPokemonsByName(String name) {
         PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
 
         Call<PokemonListResponse> call = apiService.getAllPokemons(0, 1302);
@@ -262,7 +238,7 @@ public class PokemonRepository {
                             }
                         }
 
-                        getAllPokemonsBySearch(pokemonsMatched);
+                        getAllPokemonsByNameSearch(pokemonsMatched);
                     }
                 } else {
                     // Handle errors
@@ -279,14 +255,13 @@ public class PokemonRepository {
     }
 
 
-    public void getAllPokemonsBySearch(ArrayList<PokemonListItem> pokemonListItems) {
+    public void getAllPokemonsByNameSearch(List<PokemonListItem> pokemonListItems) {
         PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
 
         ArrayList<Pokemon> pokemonsSearched = new ArrayList<>();
 
         if (pokemonListItems.size() == 0) {
-            muLivDataPokemonsSearched.postValue(new ArrayList<>());
-
+            muLivDataAllPokemonsFilterBySearch.postValue(new ArrayList<>());
         } else {
             for (PokemonListItem pokemonListItem : pokemonListItems) {
                 String name = pokemonListItem.getName();
@@ -302,8 +277,9 @@ public class PokemonRepository {
                                 pokemonsSearched.add(pokemon);
 
                                 if (pokemonsSearched.size() == pokemonListItems.size()) {
-                                    muLivDataPokemonsSearched.postValue(pokemonsSearched);
-
+                                    ArrayList<Pokemon> getAllPokemonsByNameSearchSorted = getPokemonArrayListSorted(pokemonsSearched);
+//                                    pokemonsSearched = getPokemonArrayListSorted(pokemonsSearched);
+                                    muLivDataAllPokemonsFilterBySearch.postValue(getAllPokemonsByNameSearchSorted);
                                 }
                             }
                         } else {
@@ -322,4 +298,32 @@ public class PokemonRepository {
         }
     }
 
+    public void getPokemonsById(int id) {
+        PokeApiService apiService = PokeApiClient.getRetrofitInstance().create(PokeApiService.class);
+
+        Call<Pokemon> call = apiService.getPokemonById(id);
+
+        call.enqueue(new Callback<Pokemon>() {
+            @Override
+            public void onResponse(@NonNull Call<Pokemon> call, @NonNull Response<Pokemon> response) {
+                if (response.isSuccessful()) {
+                    Pokemon pokemon = response.body();
+
+                    if (pokemon != null) {
+                        ArrayList<Pokemon> pokemons = new ArrayList<>(Collections.singletonList(pokemon));
+                        muLivDataAllPokemonsFilterBySearch.postValue(pokemons);
+                    }
+                } else {
+                    // Handle errors
+                    Log.e("Pokemons", "Handle errors");
+                }
+            }
+
+            @Override
+            public void onFailure(@NonNull Call<Pokemon> call, @NonNull Throwable t) {
+                // Handle failures
+                Log.e("Pokemons", "onFailure errors");
+            }
+        });
+    }
 }

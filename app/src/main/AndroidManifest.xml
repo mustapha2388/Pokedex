@@ -15,6 +15,9 @@
         android:theme="@style/Theme.Pokedex"
         tools:targetApi="31">
         <activity
+            android:name=".ui.controllers.MainActivity"
+            android:exported="false" />
+        <activity
             android:name=".ui.controllers.DetailActivity"
             android:exported="false"
             android:parentActivityName=".ui.controllers.MainActivity" />

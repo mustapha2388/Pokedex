@@ -11,7 +11,6 @@ import com.example.pokedex.model.Pokemon;
 import com.example.pokedex.repository.PokemonRepository;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class PokemonViewModel extends AndroidViewModel {
 
@@ -51,9 +50,10 @@ public class PokemonViewModel extends AndroidViewModel {
         return pokemonRepository.getLiveDataPokemonArrayListSortedById();
     }
 
-    public LiveData<ArrayList<Pokemon>> getLiveDataPokemonsSearched() {
-        return pokemonRepository.getLiveDataPokemonsSearched();
+    public LiveData<ArrayList<Pokemon>> getLiveDataAllPokemonsForSearchByNameOrId() {
+        return pokemonRepository.getLiveDataAllPokemonsForSearchByNameOrId();
     }
+
     public LiveData<String> getLiveDataPrevious() {
         return pokemonRepository.getLiveDataPrevious();
     }
@@ -71,12 +71,15 @@ public class PokemonViewModel extends AndroidViewModel {
         return pokemonRepository.getLiveDataPokemonDescription();
     }
 
-    public void  updateOffset(int value){
+    public void updateOffset(int value) {
         pokemonRepository.updateOffset(value);
     }
 
-    public void getAllPokemonsByName(String name) {
-        pokemonRepository.getAllPokemonsByName(name);
+    public void getPokemonByName(String name) {
+        pokemonRepository.getPokemonByName(name);
     }
 
+    public void getPokemonsById(int id) {
+        pokemonRepository.getPokemonsById(id);
+    }
 }

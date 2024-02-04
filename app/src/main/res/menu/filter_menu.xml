@@ -1,0 +1,13 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/filter_by_name"
+        android:title="Filter by name" />
+    <item
+        android:id="@+id/filter_by_id"
+        android:title="Filter by id" />
+
+    <item
+        android:id="@+id/filter_reset"
+        android:title="Reset filter" />
+</menu>

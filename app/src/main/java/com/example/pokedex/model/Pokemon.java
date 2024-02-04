@@ -1,9 +1,12 @@
 package com.example.pokedex.model;
 
+import androidx.annotation.NonNull;
+
 import com.squareup.moshi.Json;
 
 import java.util.List;
 
+@SuppressWarnings("unused")
 public class Pokemon {
     @Json(name = "name")
     private String name;
@@ -33,6 +36,7 @@ public class Pokemon {
 
     @Json(name = "stats")
     private List<Stat> stats;
+
 
     public List<Stat> getStats() {
         return stats;
@@ -115,6 +119,7 @@ public class Pokemon {
         this.specie = specie;
     }
 
+    @NonNull
     @Override
     public String toString() {
         return "Pokemon{" +
