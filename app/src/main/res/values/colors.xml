@@ -26,5 +26,8 @@
     <color name="Medium">#666666</color>
     <color name="Light">#E0E0E0</color>
     <color name="Background">#EFEFEF</color>
+    <color name="Background_Pokeball">#bfbfbf</color>
+    <color name="Background_Detail">#b8b8b8</color>
     <color name="White">#FFFFFF</color>
+    <color name="transparent">#0FFF</color>
 </resources>

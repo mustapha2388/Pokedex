@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginHorizontal="8dp"
+    android:layout_marginBottom="8dp"
+    tools:context=".ui.fragments.BodyPokemonDetailFragment">
+
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:background="@color/White"
+        app:cardCornerRadius="15dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/pokemon_type_1"
+                    style="@style/TypeTextAppearance"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginHorizontal="20dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/light_progress_bar"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pokemon_img"
+                    tools:text="TYPE 1" />
+
+
+                <TextView
+                    android:id="@+id/pokemon_type_2"
+                    style="@style/TypeTextAppearance"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:adjustViewBounds="true"
+                    android:background="@drawable/light_progress_bar"
+                    android:gravity="center"
+                    android:visibility="gone"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/pokemon_img"
+                    tools:text="TYPE 2" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/about"
+                style="@style/TitleTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:padding="40dp"
+                android:text="@string/about" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/weight_value"
+                        style="@style/TextLabelStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/weight"
+                        tools:text="9.9 kg" />
+
+                    <TextView
+                        android:id="@+id/weight_title"
+                        style="@style/TextLabelAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="@string/weight" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Light" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/height_value"
+                        style="@style/TextLabelStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:drawableStart="@drawable/straighten"
+                        tools:text="9.9 m" />
+
+                    <TextView
+                        android:id="@+id/height_title"
+                        style="@style/TextLabelAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:gravity="bottom"
+                        android:text="@string/height" />
+
+                </LinearLayout>
+
+                <!-- Divider -->
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Light" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_gravity="center">
+
+                        <TextView
+                            android:id="@+id/ability_value_1"
+                            style="@style/TextLabelStatAppearance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            tools:text="Ability 1" />
+
+
+                        <TextView
+                            android:id="@+id/ability_value_2"
+                            style="@style/TextLabelStatAppearance"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            tools:text="Ability 2" />
+
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/ability_title"
+                        style="@style/TextLabelAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/moves" />
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/pokemon_description"
+                style="@style/TextResumeAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:padding="40dp"
+                tools:text="MalorumDes Suprêmes Biens et des Suprêmes Maux) de Cicéron. Cet ouvrage, très populaire pendant la Renaissance, est un traité sur la théorie de l'éthique. Les premières lignes du Lorem Ipsum, Lorem ipsum dolor sit amet..., proviennent de la section" />
+
+            <TextView
+                android:id="@+id/base_stats"
+                style="@style/TitleTextAppearance"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="40dp"
+                android:gravity="center"
+                android:text="@string/base_stats" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal"
+                android:padding="40dp"
+                android:weightSum="10">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="6">
+
+                    <TextView
+                        android:id="@+id/hp"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/hp" />
+
+                    <TextView
+                        android:id="@+id/atk"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/atk" />
+
+                    <TextView
+                        android:id="@+id/def"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/def" />
+
+                    <TextView
+                        android:id="@+id/satk"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/satk" />
+
+                    <TextView
+                        android:id="@+id/sdef"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/sdef" />
+
+                    <TextView
+                        android:id="@+id/spd"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/spd" />
+
+                </LinearLayout>
+                <!-- Divider -->
+                <View
+                    android:layout_width="2dp"
+                    android:layout_height="match_parent"
+                    android:background="@color/Light" />
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:weightSum="6">
+
+                    <TextView
+                        android:id="@+id/hp_value"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999" />
+
+                    <TextView
+                        android:id="@+id/atk_value"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999" />
+
+                    <TextView
+                        android:id="@+id/def_value"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999"
+                        android:textColor="@color/Medium"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/satk_value"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999" />
+
+                    <TextView
+                        android:id="@+id/sdef_value"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999" />
+
+                    <TextView
+                        android:id="@+id/spd_value"
+                        style="@style/TextStatAppearance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="999" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:layout_weight="8"
+                    android:orientation="vertical"
+                    android:weightSum="6">
+
+                    <ProgressBar
+                        android:id="@+id/hpProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/light_progress_bar" />
+
+                    <ProgressBar
+                        android:id="@+id/atkProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/light_progress_bar" />
+
+                    <ProgressBar
+                        android:id="@+id/defProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/light_progress_bar" />
+
+                    <ProgressBar
+                        android:id="@+id/satkProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/light_progress_bar" />
+
+                    <ProgressBar
+                        android:id="@+id/sdefProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+                        android:progressDrawable="@drawable/light_progress_bar" />
+
+
+                    <ProgressBar
+                        android:id="@+id/spdProgressBar"
+                        style="?android:attr/progressBarStyleHorizontal"
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_weight="1"
+                        android:max="100"
+                        android:paddingBottom="10dp"
+                        android:progress="100"
+
+                        android:progressDrawable="@drawable/light_progress_bar" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</ScrollView>
