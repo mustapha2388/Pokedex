@@ -1,6 +1,7 @@
 package com.example.pokedex.ui.fragments;
 
 import static com.example.pokedex.utils.Utils.getColorOfType;
+import static com.example.pokedex.utils.Utils.getStringOfType;
 
 import android.content.res.ColorStateList;
 import android.os.Bundle;
@@ -60,12 +61,12 @@ public class BodyPokemonDetailFragment extends Fragment {
         ArrayList<TextView> pokemonTypes = new ArrayList<>(Arrays.asList(binding.pokemonType1, binding.pokemonType2));
         int cpt = 0;
         for (Type type : pokemon.getTypes()) {
-            String typeStr = type.getTypeName().getName();
-            setPokemonType(pokemonTypes.get(cpt), typeStr);
-            cpt += 1;
-        }
 
-        //TODO GET DESCRIPTION
+            String typeBrut = type.getTypeName().getName();
+            setPokemonType(pokemonTypes.get(cpt), typeBrut);
+            cpt++;
+
+        }
 
         setMeasurementValue(pokemon.getWeight(), binding.weightValue, R.string.kg);
         setMeasurementValue(pokemon.getHeight(), binding.heightValue, R.string.m);
@@ -146,7 +147,10 @@ public class BodyPokemonDetailFragment extends Fragment {
     private void setPokemonType(TextView typeTxt, String type) {
         if (!TextUtils.isEmpty(type)) {
 
-            String uppercaseType = type.toUpperCase();
+            int typeResources = getStringOfType(type);
+            String typeStr = getResources().getString(typeResources);
+            String uppercaseType = typeStr.toUpperCase();
+
             int color = ContextCompat.getColor(requireContext(), getColorOfType(type));
             ColorStateList colorStateList = ColorStateList.valueOf(color);
 

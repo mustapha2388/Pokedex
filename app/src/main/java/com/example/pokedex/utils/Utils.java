@@ -156,6 +156,50 @@ public class Utils {
         }
     }
 
+
+    public static int getStringOfType(String type) {
+
+        switch (type) {
+
+            case "fighting":
+                return R.string.fighting;
+            case "flying":
+                return R.string.flying;
+            case "ground":
+                return R.string.ground;
+            case "poison":
+                return R.string.poison;
+            case "rock":
+                return R.string.rock;
+            case "bug":
+                return R.string.bug;
+            case "ghost":
+                return R.string.ghost;
+            case "steel":
+                return R.string.steel;
+            case "fire":
+                return R.string.fire;
+            case "water":
+                return R.string.water;
+            case "grass":
+                return R.string.grass;
+            case "electric":
+                return R.string.electric;
+            case "psychic":
+                return R.string.psychic;
+            case "ice":
+                return R.string.ice;
+            case "dragon":
+                return R.string.dragon;
+            case "dark":
+                return R.string.dark;
+            case "fairy":
+                return R.string.fairy;
+            default:
+                return R.string.normal;
+        }
+    }
+
     public static void saveCurrentOffset(MainActivity mainActivity, int offset) {
         SharedPreferences preferences = mainActivity.getPreferences(MODE_PRIVATE);
         SharedPreferences.Editor editor = preferences.edit();
@@ -221,6 +265,14 @@ public class Utils {
     public static String getIdWith3DigitsFormat(int id) {
         return String.format(Locale.FRANCE, "#%03d", id);
 
+    }
+
+    public static boolean isNameTooLong(String name) {
+        return name.contains("-") && name.length() >= 10;
+    }
+
+    public static String shortcutStr(String name) {
+        return name.split("-")[0];
     }
 
 }

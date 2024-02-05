@@ -2,6 +2,8 @@ package com.example.pokedex.ui.adapter;
 
 import static android.content.ContentValues.TAG;
 import static com.example.pokedex.utils.Utils.getIdWith3DigitsFormat;
+import static com.example.pokedex.utils.Utils.isNameTooLong;
+import static com.example.pokedex.utils.Utils.shortcutStr;
 import static com.example.pokedex.utils.Utils.startActivity;
 
 import android.content.Context;
@@ -13,6 +15,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -85,7 +88,11 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
         public void displayPokemon(Pokemon pokemon) {
 
-            name.setText(pokemon.getName());
+            String pokemonName = pokemon.getName();
+            if (isNameTooLong(pokemon.getName())) {
+                pokemonName = shortcutStr(pokemonName);
+            }
+            name.setText(pokemonName);
             String id = getIdWith3DigitsFormat(pokemon.getId());
             number.setText(id);
             name.setOnClickListener(view -> Log.i(TAG, "displayPokemon " + name));
@@ -100,7 +107,6 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
                     .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(image);
 
         }
-
     }
 
 

@@ -152,7 +152,6 @@ public class MainActivity extends AppCompatActivity {
                 binding.toolbar.searchView.setInputType(InputType.TYPE_CLASS_TEXT);
 
                 if (item.getItemId() == R.id.filter_reset) {
-//                    closeKeyboard();
                     pokemonViewModel.updateOffset(OFFSET_FIRST_PAGE);
                 }
             }
