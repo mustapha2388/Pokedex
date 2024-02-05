@@ -29,17 +29,20 @@
     <string name="weight">weight</string>
     <string name="height">height</string>
     <string name="moves">moves</string>
-    <string name="about">about</string>
+    <string name="about">About</string>
     <string name="number">#</string>
     <string name="kg">kg</string>
     <string name="m">m</string>
     <string name="basic">basic</string>
     <string name="shiny">shiny</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="hp">hp</string>
     <string name="sharp_with_pokemon_id">#%1$s</string>
     <string name="btn_filter">filter boutton</string>
     <string name="search_pokemon_by_name">search by name</string>
     <string name="search_pokemon_by_id">search by id</string>
+    <string name="img_thumb_pokemon">image thumb of pokemon</string>
+    <string name="filter_by_name">Filter by name</string>
+    <string name="filter_by_id">Filter by id</string>
+    <string name="reset_filter">Reset filter</string>
 </resources>

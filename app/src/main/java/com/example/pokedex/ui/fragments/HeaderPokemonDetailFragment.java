@@ -50,23 +50,29 @@ public class HeaderPokemonDetailFragment extends Fragment {
         setupListener();
         String urlImgDefault = pokemon.getSprite().getOther().getOfficialArtwork().getFrontDefault();
 
-        bindData(urlImgDefault);
+        bindData(urlImgDefault, "skin_default");
         animateImage(binding.pokemonImg);
     }
 
     private void setupListener() {
+
         String urlImgShiny = pokemon.getSprite().getOther().getOfficialArtwork().getFrontShiny();
         String urlImgDefault = pokemon.getSprite().getOther().getOfficialArtwork().getFrontDefault();
+
         binding.pokemonImg.setOnClickListener(view -> {
 
-            String currentImageUrl = (String) binding.pokemonImg.getTag();
-            String newImageUrl = (currentImageUrl != null && currentImageUrl.equals(urlImgShiny)) ? urlImgDefault : urlImgShiny;
+            String currentImageUrlTag = (String) binding.pokemonImg.getTag();
 
-            bindData(newImageUrl);
+            if (currentImageUrlTag.equals("skin_default")) {
+                bindData(urlImgShiny, "skin_shiny");
+            } else {
+                bindData(urlImgDefault, "skin_default");
+            }
+
         });
     }
 
-    private void bindData(String url) {
+    private void bindData(String url, String skin) {
 
         Glide.with(this)
                 .load(url)
@@ -75,7 +81,7 @@ public class HeaderPokemonDetailFragment extends Fragment {
                         .error(R.drawable.unknow_pokemon))
                 .diskCacheStrategy(DiskCacheStrategy.AUTOMATIC).into(binding.pokemonImg);
 
-        binding.pokemonImg.setTag(url);
+        binding.pokemonImg.setTag(skin);
     }
 
 
