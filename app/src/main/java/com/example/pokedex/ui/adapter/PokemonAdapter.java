@@ -15,7 +15,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.widget.AppCompatButton;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -23,6 +22,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.pokedex.R;
 import com.example.pokedex.model.Pokemon;
+import com.example.pokedex.services.OnItemClickListener;
 import com.example.pokedex.ui.controllers.DetailActivity;
 import com.example.pokedex.ui.controllers.MainActivity;
 
@@ -32,9 +32,12 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
     private final ArrayList<Pokemon> pokemons;
     private final Context context;
 
-    public PokemonAdapter(ArrayList<Pokemon> pokemons, Context context) {
+    private final OnItemClickListener listener;
+
+    public PokemonAdapter(ArrayList<Pokemon> pokemons, Context context, OnItemClickListener listener) {
         this.pokemons = pokemons;
         this.context = context;
+        this.listener = listener;
     }
 
     @NonNull
@@ -79,6 +82,7 @@ public class PokemonAdapter extends RecyclerView.Adapter<PokemonAdapter.PokemonV
 
                 if (context instanceof MainActivity) {
 
+                    listener.onItemClick();
                     startActivity(context, DetailActivity.class, id);
                 }
 

@@ -141,6 +141,7 @@ public class DetailActivity extends AppCompatActivity {
             public void handleOnBackPressed() {
                 // Your custom back press handling
                 finish();
+
                 overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
 
 

@@ -15,7 +15,6 @@ import android.os.Handler;
 import android.os.Looper;
 import android.text.InputType;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -286,7 +285,9 @@ public class MainActivity extends AppCompatActivity {
 
     private void getPokemons(ArrayList<Integer> ids) {
 
-        adapter = new PokemonAdapter(pokemons, MainActivity.this);
+        adapter = new PokemonAdapter(pokemons, MainActivity.this, () ->
+
+                binding.toolbar.searchView.setQuery("", false));
         binding.recyclerView.setAdapter(adapter);
 
         pokemonViewModel.getLiveDataPokemonArrayListSortedById().observe(MainActivity.this, this::updateRecyclerView);

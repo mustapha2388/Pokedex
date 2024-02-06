@@ -275,4 +275,8 @@ public class Utils {
         return name.split("-")[0];
     }
 
+    public static void clearSearchView(){
+
+    }
+
 }
